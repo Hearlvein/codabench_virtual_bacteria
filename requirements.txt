@@ -15,3 +15,5 @@ biopython
 # torch comes from the PyTorch wheel index in tools/Dockerfile (CUDA build);
 # listed here for local installs / the dependency contract.
 torch
+# Dependencies added during the challenge (installed on top of the v1 image).
+-r extra-deps.txt

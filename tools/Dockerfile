@@ -38,7 +38,7 @@ RUN pip install -U pip && pip install --no-cache-dir \
 
 # All Python dependencies a submission may import: nothing is installed at
 # submission time.
-COPY requirements.txt /tmp/requirements.txt
+COPY requirements.txt extra-deps.txt /tmp/
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 COPY ingestion_program /compet/ingestion_program

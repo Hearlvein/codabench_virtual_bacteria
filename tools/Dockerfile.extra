@@ -1,0 +1,14 @@
+# Adds extra-deps.txt to the running image without a full rebuild: the
+# installed packages are frozen as constraints, so pip cannot upgrade them and
+# fails instead of moving the stack under scored submissions. Build from the
+# repo root and push under the competition tag:
+#
+#     docker build -f tools/Dockerfile.extra -t tommoral/bacteria-compet:v1 .
+#
+# FROM is the image built by tools/Dockerfile, pinned by digest so rebuilds
+# do not stack on each other.
+FROM tommoral/bacteria-compet@sha256:84b94119ed6c97d114f490e8feec3a7069c76b4bcf2b9c33bd9914a0567dbe89
+
+COPY extra-deps.txt /tmp/extra-deps.txt
+RUN pip list --format=freeze > /tmp/frozen.txt && \
+    pip install --no-cache-dir -r /tmp/extra-deps.txt -c /tmp/frozen.txt

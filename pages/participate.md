@@ -75,6 +75,11 @@ evaluates it. There, `fit` gets the train **and** the eval observations, so
 your training must adapt to more data than in your local runs. See `solution/submission.py` for a working baseline
 (feature builder + Ridge regression + dispersion calibration).
 
+The platform installs nothing at submission time: `submission.py` can only
+import the packages of `requirements.txt`, and a solver's benchopt
+`requirements` are ignored. To use another package, open a pull request on
+the challenge repository that adds it to `extra-deps.txt`.
+
 ## The compute
 
 Each submission runs on its own AWS g4dn.2xlarge machine: one NVIDIA T4 GPU
