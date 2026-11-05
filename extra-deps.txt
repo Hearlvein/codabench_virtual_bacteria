@@ -1,2 +1,3 @@
 # Dependencies added during the challenge. tools/Dockerfile.extra installs
 # them on top of the running image without moving the packages it holds.
+catboost
