@@ -3,7 +3,8 @@
 # fails instead of moving the stack under scored submissions. Build from the
 # repo root and push under the competition tag:
 #
-#     docker build -f tools/Dockerfile.extra -t tommoral/bacteria-compet:v1 .
+#     docker build -f tools/Dockerfile.extra \
+#         -t ghcr.io/x-datascience-datacamp/bacteria-compet:v1 .
 #
 # FROM is the image built by tools/Dockerfile, pinned by digest so rebuilds
 # do not stack on each other.

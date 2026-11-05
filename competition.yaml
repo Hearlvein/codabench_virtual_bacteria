@@ -14,7 +14,7 @@ image: logo.png
 registration_auto_approve: False
 
 # The image submissions run in; it carries the requirements.txt stack.
-docker_image: tommoral/bacteria-compet:v1
+docker_image: ghcr.io/x-datascience-datacamp/bacteria-compet:v1
 
 # Only the leaderboard metrics are exposed.
 enable_detailed_results: False

@@ -1,5 +1,6 @@
 # Builds tools/Dockerfile.extra on the running image, so a dependency that
-# does not fit its frozen stack fails here rather than at deploy time.
+# does not fit its frozen stack fails here rather than at deploy time. On main,
+# pushes it as the competition image: workers pull it on the next submission.
 name: Extra deps
 
 on:
@@ -8,10 +9,14 @@ on:
     paths: [extra-deps.txt, tools/Dockerfile.extra, .github/workflows/extra-deps.yml]
   pull_request:
     paths: [extra-deps.txt, tools/Dockerfile.extra, .github/workflows/extra-deps.yml]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Free disk space
         run: |
@@ -19,4 +24,14 @@ jobs:
           sudo rm -rf /usr/local/.ghcup || true
       - uses: actions/checkout@v4
       - name: Build tools/Dockerfile.extra on the running image
-        run: docker build -f tools/Dockerfile.extra -t extra-deps-test .
+        run: |
+          docker build -f tools/Dockerfile.extra -t extra-deps-test \
+            --label org.opencontainers.image.source=https://github.com/${{ github.repository }} .
+      - name: Push as the competition image
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          image=$(sed -n 's/^docker_image: *//p' competition.yaml)
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+            docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag extra-deps-test "$image"
+          docker push "$image"
